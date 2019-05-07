@@ -28,36 +28,19 @@
             <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
         </div>
     </div>
-    <hr />
-    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}</ngb-alert>
-    <hr />
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card card-default">
-                <div class="card-header">
-                    <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
-                </div>
-                <!-- /.card-header -->
-                <app-timeline></app-timeline>
-                <!-- /.card-body -->
+    <hr>
+    <div class="col col-sm-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                Bar Chart
             </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.col-lg-8 -->
-        <div class="col-lg-4">
-            <div class="card card-default mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bell fa-fw"></i> Notifications card
-                </div>
-                <!-- /.card-header -->
-                <app-notification></app-notification>
-                <!-- /.card-body -->
+            <div class="card-body">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                </canvas>
             </div>
-            <!-- /.card -->
-
-            <app-chat></app-chat>
-            <!-- /.card .chat-card -->
+            <div class="card-footer">
+                <button class="btn btn-info btn-sm" (click)="randomize()">Update</button>
+            </div>
         </div>
-        <!-- /.col-lg-4 -->
     </div>
 </div>

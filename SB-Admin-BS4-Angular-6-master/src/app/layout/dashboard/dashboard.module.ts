@@ -4,6 +4,7 @@ import { NgbCarouselModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { ChartsModule as Ng2Charts} from 'ng2-charts';
 import {
     TimelineComponent,
     NotificationComponent,
@@ -15,6 +16,7 @@ import { StatModule } from '../../shared';
     imports: [
         CommonModule,
         NgbCarouselModule,
+        Ng2Charts,
         NgbAlertModule,
         DashboardRoutingModule,
         StatModule
