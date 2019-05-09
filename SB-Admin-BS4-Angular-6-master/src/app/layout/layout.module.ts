@@ -8,6 +8,7 @@ import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ReportDataService } from './report-data.service';
+import { AuthGuardService } from './auth-guard.service';
 
 @NgModule({
     imports: [
@@ -17,6 +18,6 @@ import { ReportDataService } from './report-data.service';
         NgbDropdownModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent],
-    providers: [ReportDataService]
+    providers: [ReportDataService, AuthGuardService]
 })
 export class LayoutModule {}

@@ -72,6 +72,5 @@ export class SidebarComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
     }
 }

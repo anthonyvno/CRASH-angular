@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { routerTransition } from '../router.animations';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from '../layout/authentication.service';
 
 @Component({
     selector: 'app-login',
@@ -14,31 +15,27 @@ export class LoginComponent implements OnInit {
     model: any = {};
 
     constructor(
-    private route: ActivatedRoute,
-      public router: Router,
-      private http: HttpClient
-      ) {}
+        private route: ActivatedRoute,
+        public router: Router,
+        private http: HttpClient,
+        private authenticationService: AuthenticationService
+    ) {}
 
     ngOnInit() {
-        sessionStorage.setItem('token', '');
-        localStorage.setItem('isLoggedin', 'false');
+        this.logout();
     }
 
     login() {
-        const url = 'http://localhost:8080/login';
-        const result = this.http.post<Observable<boolean>>(url, {
-            userName: this.model.username,
-            password: this.model.password
-        }).subscribe(isValid => {
-            if (isValid) {
-                sessionStorage.setItem('token', btoa(this.model.username + ':' + this.model.password));
+        this.authenticationService.login(this.model.username, this.model.password).subscribe(val => {
+            if (val) {
                 this.router.navigate(['']);
             } else {
-                alert('Authentication failed.');
+                alert('Could not login');
             }
         });
-        console.log(result);
-        console.log(this.http.get(url));
-         localStorage.setItem('isLoggedin', 'true');
+    }
+
+    logout() {
+        this.authenticationService.logout();
     }
 }
