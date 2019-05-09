@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Insurer } from './model/insurer.model';
 import { Observable } from 'rxjs';
 import { map, filter, find } from 'rxjs/operators';
@@ -13,6 +13,8 @@ export class ReportDataService {
     constructor(private http: HttpClient) {}
 
     get insurers(): Observable<Insurer[]> {
-        return this.http.get(`${this._appUrl}/insurers/`).pipe(map((list: any[]): Insurer[] => list.map(Insurer.fromJson)));
+        const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa('user' + ':' + 'password') });
+
+        return this.http.get(`${this._appUrl}/insurers/`, { headers }).pipe(map((list: any[]): Insurer[] => list.map(Insurer.fromJson)));
     }
 }

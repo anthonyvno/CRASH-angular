@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { Insurer } from './model/insurer.model';
 
 @Injectable({
     providedIn: 'root'
@@ -13,21 +14,17 @@ export class AuthenticationService {
 
     constructor(private http: HttpClient) {}
 
-    login(username: string, password: string): Observable<boolean> {
+    login(username: string, password: string) {
+        // sessionStorage.setItem('token', btoa('user' + ':' + 'password'));
+         const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
+
         return this.http
-            .post<Observable<boolean>>(this.url, {
-                userName: username,
-                password: password
-            })
+            .get(this.url, {headers})
             .pipe(
-                map((res: any) => {
-                    if (res) {
+                map(insurer => {
                         sessionStorage.setItem('token', btoa(username + ':' + password));
+                        console.log(insurer);
                         return true;
-                    } else {
-                        alert('Authentication failed.');
-                        return false;
-                    }
                 })
             );
     }
