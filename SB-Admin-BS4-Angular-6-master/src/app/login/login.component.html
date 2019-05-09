@@ -1,21 +1,40 @@
 <div class="login-page" [@routerTransition]>
     <div class="row justify-content-md-center">
         <div class="col-md-4">
-            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
-            <h1>SB Admin BS4 Angular7</h1>
-            <form role="form">
-                <div class="form-content">
+            <img src="assets/images/ehub_launch_icon.png" width="90px" class="user-avatar" />
+            <h1>CRASH</h1>
+            <form name="form" (ngSubmit)="f.form.valid && login()" role="form" #f="ngForm" novalidate>
+                <div [ngClass]="{ 'has-error': f.submitted && !username.valid }" class="form-content">
                     <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="{{ 'Email' | translate }}">
+                        <input
+                            type="text"
+                            name="username"
+                            [(ngModel)]="model.username"
+                            #username="ngModel"
+                            class="form-control input-underline input-lg"
+                            id=""
+                            placeholder="{{ 'Email' | translate }}"
+                            required
+                        />
+                        <div *ngIf="f.submitted && !username.valid">Username is required</div>
                     </div>
-
-                    <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="{{ 'Password' | translate }}">
+                    <div [ngClass]="{ 'has-error': f.submitted && !password.valid }" class="form-group">
+                        <input
+                            type="password"
+                            name="password"
+                            [(ngModel)]="model.password"
+                            #password="ngModel"
+                            class="form-control input-underline input-lg"
+                            id=""
+                            placeholder="{{ 'Password' | translate }}"
+                            required
+                        />
+                        <div *ngIf="f.submitted && !password.valid">Password is required</div>
+                    </div>
+                    <div>
+                        <button [disabled]="loading" class="btn rounded-btn">Login</button>
                     </div>
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()">{{ 'Log in' | translate }}</a>
-                &nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/signup']">{{ 'Register' | translate }}</a>
             </form>
         </div>
     </div>
