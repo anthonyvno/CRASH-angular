@@ -9,6 +9,7 @@ import {
     NotificationComponent,
 } from './components';
 import { StatModule } from '../../shared';
+import { ReportDataService } from '../report-data.service';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { StatModule } from '../../shared';
     declarations: [
         DashboardComponent,
         NotificationComponent
-    ]
+    ],
+    providers:[ReportDataService]
 })
 export class DashboardModule {}

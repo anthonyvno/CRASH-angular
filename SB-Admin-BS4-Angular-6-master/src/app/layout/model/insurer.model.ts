@@ -1,9 +1,9 @@
 export class Insurer {
     private _id: number;
     private _country: string;
-    private _name: Date;
+    private _name: string;
 
-    constructor(id: number, country: string, name: Date) {
+    constructor(id: number, country: string, name: string) {
         this._id = id;
         this._country = country;
         this._name = name;
@@ -17,7 +17,7 @@ export class Insurer {
         return this._country;
     }
 
-    public get name(): Date {
+    public get name(): string {
         return this._name;
     }
 
@@ -29,7 +29,16 @@ export class Insurer {
         this._country = value;
     }
 
-    public set name(value: Date) {
+    public set name(value: string) {
         this._name = value;
+    }
+
+    static fromJson(json: any): Insurer {
+        if (json != null) {
+            const ins = new Insurer(json.id, json.country, json.name);
+            return ins;
+        } else {
+            return null;
+        }
     }
 }
