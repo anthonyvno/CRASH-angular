@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ReportDataService } from '../report-data.service';
 import { Insurer } from '../model/insurer.model';
@@ -14,6 +14,7 @@ import { Report } from '../model/report.model';
 })
 export class DashboardComponent implements OnInit {
     private _insurers: Insurer[];
+    public isLoaded = false;
     private _today: Date;
     private errorMsg: string;
     private _reports: Report[];
@@ -75,7 +76,7 @@ export class DashboardComponent implements OnInit {
 
     // Doughnut
     public doughnutChartLabels: string[];
-    public doughnutChartData: number[] = [350, 450, 100];
+    public doughnutChartData: number[] = [350, 100, 50];
     public doughnutChartType: string;
 
     // BARCHART
@@ -90,7 +91,6 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this._today = new Date();
-        this.barChartData = [{ data: ['', '', '', '', '', ''], label: 'Aantal reports' }];
         this.reportDataService.reportsByInsurer.subscribe(
             reports => {
                 this._reports = reports;
@@ -100,6 +100,7 @@ export class DashboardComponent implements OnInit {
                 console.log(error.message);
             }
         );
+
 
 
     }
@@ -115,6 +116,7 @@ export class DashboardComponent implements OnInit {
         this.initializeBarChart(reports);
         this.initializeDoughnutChart(reports);
         this.initializeLineChart(reports);
+        this.isLoaded = true;
     }
 
     initializeBarChart(reports: Report[]) {
@@ -122,7 +124,6 @@ export class DashboardComponent implements OnInit {
             scaleShowVerticalLines: false,
             responsive: true
         };
-        this.barChartData = [{ data: [1, 2, 3, 4, 5, 6], label: 'Aantal reports' }];
         this.barChartType = 'bar';
         this.barChartLegend = true;
         this.barChartLabels = [
@@ -134,14 +135,17 @@ export class DashboardComponent implements OnInit {
             this.getMonthName(this._today.getMonth())
         ];
 
+        this.barChartData = [{ data: [2, 2, 3, 4, 5, 6], label: 'Aantal reports' }];
         const lastSixMonthsReports = reports.filter(
-            report => report.dateReportReceived > new Date(new Date().setMonth(this._today.getMonth() - 6))
+            report => new Date(report.dateReportReceived) > new Date(new Date().setMonth(this._today.getMonth() - 6))
         );
+
         let dataForBarChart: number[];
     }
     initializeDoughnutChart(reports: Report[]) {
         this.doughnutChartType = 'doughnut';
         this.doughnutChartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+
     }
     initializeLineChart(reports: Report[]) {
         this.lineChartLegend = true;
