@@ -9,8 +9,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
+    public username: String;
 
     constructor(private translate: TranslateService, public router: Router) {
+
 
         this.router.events.subscribe(val => {
             if (
@@ -24,6 +26,7 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.username = atob(sessionStorage.getItem('token')).split(':')[0];
         this.pushRightClass = 'push-right';
     }
 

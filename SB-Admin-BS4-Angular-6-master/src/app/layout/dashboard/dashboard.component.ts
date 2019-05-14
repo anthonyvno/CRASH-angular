@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { ReportDataService } from '../report-data.service';
 import { Insurer } from '../model/insurer.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Report } from '../model/report.model';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,8 +14,23 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class DashboardComponent implements OnInit {
     private _insurers: Insurer[];
+    private _today: Date;
     private errorMsg: string;
-
+    private _reports: Report[];
+    public monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ];
     // lineChart
     public lineChartData: Array<any> = [
         { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
@@ -58,48 +74,80 @@ export class DashboardComponent implements OnInit {
     public lineChartType: string;
 
     // Doughnut
-    public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+    public doughnutChartLabels: string[];
     public doughnutChartData: number[] = [350, 450, 100];
     public doughnutChartType: string;
 
     // BARCHART
-    public barChartOptions: any = {
-        scaleShowVerticalLines: false,
-        responsive: true
-    };
-    public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+    public barChartOptions: any;
+    public barChartLabels: string[];
     public barChartType: string;
     public barChartLegend: boolean;
 
-    public barChartData: any[] = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-    ];
+    public barChartData: any[];
 
-    public alerts: Array<any> = [];
+    constructor(private reportDataService: ReportDataService) {}
 
-    constructor(private reportDataService: ReportDataService) {
-        this.alerts.push(
-            {
-                id: 1,
-                type: 'success',
-                message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-                consectetur velit culpa molestias dignissimos
-                voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
+    ngOnInit() {
+        this._today = new Date();
+        this.barChartData = [{ data: ['', '', '', '', '', ''], label: 'Aantal reports' }];
+        this.reportDataService.reportsByInsurer.subscribe(
+            reports => {
+                this._reports = reports;
+                this.initializeCharts(reports);
             },
-            {
-                id: 2,
-                type: 'warning',
-                message: `Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptates est animi quibusdam praesentium quam, et perspiciatis,
-                consectetur velit culpa molestias dignissimos
-                voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
+            (error: HttpErrorResponse) => {
+                console.log(error.message);
             }
         );
+
+
     }
 
-    // events
+    public getMonthName(month: number) {
+        if (month < 0) {
+            month = month + 12;
+        }
+        return this.monthNames[month];
+    }
+
+    initializeCharts(reports: Report[]) {
+        this.initializeBarChart(reports);
+        this.initializeDoughnutChart(reports);
+        this.initializeLineChart(reports);
+    }
+
+    initializeBarChart(reports: Report[]) {
+        this.barChartOptions = {
+            scaleShowVerticalLines: false,
+            responsive: true
+        };
+        this.barChartData = [{ data: [1, 2, 3, 4, 5, 6], label: 'Aantal reports' }];
+        this.barChartType = 'bar';
+        this.barChartLegend = true;
+        this.barChartLabels = [
+            this.getMonthName(this._today.getMonth() - 5),
+            this.getMonthName(this._today.getMonth() - 4),
+            this.getMonthName(this._today.getMonth() - 3),
+            this.getMonthName(this._today.getMonth() - 2),
+            this.getMonthName(this._today.getMonth() - 1),
+            this.getMonthName(this._today.getMonth())
+        ];
+
+        const lastSixMonthsReports = reports.filter(
+            report => report.dateReportReceived > new Date(new Date().setMonth(this._today.getMonth() - 6))
+        );
+        let dataForBarChart: number[];
+    }
+    initializeDoughnutChart(reports: Report[]) {
+        this.doughnutChartType = 'doughnut';
+        this.doughnutChartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+    }
+    initializeLineChart(reports: Report[]) {
+        this.lineChartLegend = true;
+        this.lineChartType = 'line';
+    }
+
     public chartClicked(e: any): void {
         // console.log(e);
     }
@@ -114,40 +162,5 @@ export class DashboardComponent implements OnInit {
         const clone = JSON.parse(JSON.stringify(this.barChartData));
         clone[0].data = data;
         this.barChartData = clone;
-        /**
-         * (My guess), for Angular to recognize the change in the dataset
-         * it has to change the dataset variable directly,
-         * so one way around it, is to clone the data, change it and then
-         * assign it;
-         */
-        console.log(this.reportDataService.reportsByInsurer.subscribe(reports => console.log(reports[0])));
-        console.log(this._insurers);
-    }
-
-    ngOnInit() {
-        this.barChartType = 'bar';
-        this.barChartLegend = true;
-        this.doughnutChartType = 'doughnut';
-        this.lineChartLegend = true;
-        this.lineChartType = 'line';
-
-        console.log(atob(sessionStorage.getItem('token')));
-
-
-        this.reportDataService.insurers.subscribe(
-            insurers => (
-                (this._insurers = insurers.filter(insurer => insurer)),
-                (error: HttpErrorResponse) => {
-                    this.errorMsg = `Error ${error.status} while trying to retrieve insurers: ${error.error}`;
-                }
-            )
-        );
-        console.log(this.reportDataService.insurers.subscribe(insurers => console.log(insurers[0])));
-        console.log(this._insurers);
-    }
-
-    public closeAlert(alert: any) {
-        const index: number = this.alerts.indexOf(alert);
-        this.alerts.splice(index, 1);
     }
 }
