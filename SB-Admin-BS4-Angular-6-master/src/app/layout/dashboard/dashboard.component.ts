@@ -130,6 +130,9 @@ export class DashboardComponent implements OnInit {
         this.lineChartLegend = true;
         this.lineChartType = 'line';
 
+        console.log(atob(sessionStorage.getItem('token')));
+
+
         this.reportDataService.insurers.subscribe(
             insurers => (
                 (this._insurers = insurers.filter(insurer => insurer)),
