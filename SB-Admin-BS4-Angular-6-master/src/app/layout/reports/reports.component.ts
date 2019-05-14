@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ReportDataService } from '../report-data.service';
+import { Report } from '../model/report.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-reports',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportsComponent implements OnInit {
    advancedPagination: number;
-   constructor() {
+   private _reports: Report[];
+   constructor(private reportDataService: ReportDataService) {
     this.advancedPagination = 1;
 }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.reportDataService.reportsByInsurer.subscribe(
+            reports => (this._reports = reports),
+            (error: HttpErrorResponse) => {
+                console.log(error.message);
+            }
+        );
+    }
+
+    get reports() {
+        return this._reports;
+    }
 }
