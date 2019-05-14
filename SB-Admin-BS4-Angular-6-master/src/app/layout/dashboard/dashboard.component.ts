@@ -100,9 +100,6 @@ export class DashboardComponent implements OnInit {
                 console.log(error.message);
             }
         );
-
-
-
     }
 
     public getMonthName(month: number) {
@@ -135,17 +132,32 @@ export class DashboardComponent implements OnInit {
             this.getMonthName(this._today.getMonth())
         ];
 
-        this.barChartData = [{ data: [2, 2, 3, 4, 5, 6], label: 'Aantal reports' }];
         const lastSixMonthsReports = reports.filter(
             report => new Date(report.dateReportReceived) > new Date(new Date().setMonth(this._today.getMonth() - 6))
         );
 
-        let dataForBarChart: number[];
+        const dataForBarChart = [0, 0, 0, 0, 0, 0];
+        lastSixMonthsReports.forEach(report => {
+            let counter = 0;
+            let counter2 = 0;
+            for (let i = this._today.getMonth() - 5; i <= this._today.getMonth(); i++) {
+                if (i < 0) {
+                    counter = i + 12;
+                } else {
+                    counter = i;
+                }
+                if (new Date(report.dateReportReceived).getMonth() === counter) {
+                    dataForBarChart[counter2]++;
+                }
+                counter2++;
+            }
+        });
+        this.barChartData = [{ data: dataForBarChart, label: 'Aantal reports' }];
+        console.log(dataForBarChart);
     }
     initializeDoughnutChart(reports: Report[]) {
         this.doughnutChartType = 'doughnut';
         this.doughnutChartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-
     }
     initializeLineChart(reports: Report[]) {
         this.lineChartLegend = true;
