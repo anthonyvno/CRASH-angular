@@ -75,4 +75,14 @@ export class Vehicle {
     public set type(value: string) {
         this._type = value;
     }
+
+    static fromJson(json: any): Vehicle {
+        if (json != null) {
+            const ins = new Vehicle(json.id, json.insurance, json.country, json.licensePlate, json.brand,
+            json.model, json.type);
+            return ins;
+        } else {
+            return null;
+        }
+    }
 }

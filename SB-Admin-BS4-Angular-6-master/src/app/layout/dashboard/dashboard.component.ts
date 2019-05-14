@@ -120,6 +120,7 @@ export class DashboardComponent implements OnInit {
          * so one way around it, is to clone the data, change it and then
          * assign it;
          */
+        console.log(this.reportDataService.reportsByInsurer.subscribe(reports => console.log(reports[0])));
         console.log(this._insurers);
     }
 

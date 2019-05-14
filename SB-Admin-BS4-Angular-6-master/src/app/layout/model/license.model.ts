@@ -42,4 +42,13 @@ export class License {
     public set expires(value: string) {
         this._expires = value;
     }
+
+    static fromJson(json: any): License {
+        if (json != null) {
+            const ins = new License(json.id, json.category, json.licenseNumber, json.expires);
+            return ins;
+        } else {
+            return null;
+        }
+    }
 }

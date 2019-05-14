@@ -50,7 +50,6 @@ export class Profile {
         this._license = value;
     }
 
-
     public set vehicles(value: Vehicle[]) {
         this._vehicles = value;
     }
@@ -65,5 +64,21 @@ export class Profile {
 
     public set email(value: string) {
         this._email = value;
+    }
+
+    static fromJson(json: any): Profile {
+        if (json != null) {
+            const ins = new Profile(
+                json.id,
+                json.license,
+                json.vehicles.map(Vehicle.fromJson),
+                json.firstName,
+                json.lastName,
+                json.email
+            );
+            return ins;
+        } else {
+            return null;
+        }
     }
 }

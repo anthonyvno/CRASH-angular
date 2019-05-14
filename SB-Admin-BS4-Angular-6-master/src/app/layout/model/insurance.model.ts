@@ -82,4 +82,14 @@ export class Insurance {
     public set phoneAgency(value: string) {
         this._phoneAgency = value;
     }
+
+    static fromJson(json: any): Insurance {
+        if (json != null) {
+            const ins = new Insurance(json.id, json.insurer, json.insuranceNumber, json.greenCardNumber,
+             json.emailAgency, json.expires, json.phoneAgency);
+            return ins;
+        } else {
+            return null;
+        }
+    }
 }

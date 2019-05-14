@@ -1,4 +1,4 @@
-import { Profile } from 'selenium-webdriver/firefox';
+import { Profile } from './profile.model';
 
 export class Report {
     private _id: number;
@@ -125,5 +125,27 @@ export class Report {
 
     public set circumstances(value: Boolean[][]) {
         this._circumstances = value;
+    }
+
+    static fromJson(json: any): Report {
+        console.log(json);
+        if (json != null) {
+            const ins = new Report(
+                json.id,
+                json.profiles.map(Profile.fromJson),
+                json.dateReportReceived,
+                json.dateCrash,
+                json.street,
+                json.streetNumber,
+                json.postalCode,
+                json.city,
+                json.country,
+                json.pdfReport,
+                json.circumstances
+            );
+            return ins;
+        } else {
+            return null;
+        }
     }
 }
