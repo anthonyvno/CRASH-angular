@@ -148,4 +148,20 @@ export class Report {
             return null;
         }
     }
+
+    toJSON() {
+        return {
+            id: this._id,
+            profiles: this._profiles,
+            dateReportReceived: this._dateReportReceived,
+            dateCrash: this._dateCrash,
+            street: this._street,
+            streetNumber: this._streetNumber,
+            postalCode: this._postalCode,
+            city: this._city,
+            country: this._country,
+            pdfReport: this._pdfReport,
+            circumstances: this._circumstances,
+        };
+      }
 }

@@ -23,7 +23,7 @@
                         <td>{{report |insuredByLoggedInInsurer}}</td>
                         <td>
                             <button class="btn-primary" (click)="downloadPDF(report)"><i class="fa fa-download"></i> PDF</button>
-                            <button class="ml-3 btn-primary"><i class="fa fa-download"></i> Excel</button>
+                            <button class="ml-3 btn-primary" (click)="downloadExcel(report)"><i class="fa fa-download"></i> Excel</button>
                         </td>
                     </tr>
                 </ng-container>
