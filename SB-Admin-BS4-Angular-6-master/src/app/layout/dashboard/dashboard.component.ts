@@ -100,7 +100,7 @@ export class DashboardComponent implements OnInit {
                             ticks: {
                                 min: 0, // it is for ignoring negative step.
                                 beginAtZero: true,
-                                precision: 0
+                                precision: 0}
                         }
                     ]
                 }

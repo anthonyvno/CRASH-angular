@@ -10,9 +10,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ReportsComponent implements OnInit {
    advancedPagination: number;
+   pageSize: number;
    private _reports: Report[];
    constructor(private reportDataService: ReportDataService) {
     this.advancedPagination = 1;
+    this.pageSize = 20;
 }
 
     ngOnInit() {

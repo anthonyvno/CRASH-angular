@@ -12,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let report of reports">
+                <ng-container *ngFor="let report of reports | slice: (advancedPagination-1) * pageSize : (advancedPagination-1) * pageSize + pageSize">
                     <tr>
                         <th scope="row">{{ report.profiles[0].firstName }}</th>
                         <td>{{ report.street }} {{ report.streetNumber }}, {{ report.postalCode }}</td>
@@ -25,9 +25,10 @@
     </div>
 
     <ngb-pagination
-        [collectionSize]="120"
+        [collectionSize]="reports.length"
         [(page)]="advancedPagination"
-        [maxSize]="5"
+        [pageSize]="pageSize"
+     
         [rotate]="true"
         [ellipses]="false"
         [boundaryLinks]="true"
