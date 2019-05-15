@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports.component';
 import { PageHeaderModule } from '../../shared';
+import { InsuredByLoggedInInsurerPipe } from './insured-by-logged-in-insurer.pipe';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { PageHeaderModule } from '../../shared';
         PageHeaderModule
     ],
     declarations: [
-        ReportsComponent
+        ReportsComponent,
+        InsuredByLoggedInInsurerPipe
     ]
 })
 export class ReportsModule {}

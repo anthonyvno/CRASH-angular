@@ -9,13 +9,14 @@ import { HttpErrorResponse } from '@angular/common/http';
     styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-   advancedPagination: number;
-   pageSize: number;
-   private _reports: Report[];
-   constructor(private reportDataService: ReportDataService) {
-    this.advancedPagination = 1;
-    this.pageSize = 20;
-}
+    advancedPagination: number;
+    pageSize: number;
+    insurer = atob(sessionStorage.getItem('token')).split(':')[0];
+    private _reports: Report[];
+    constructor(private reportDataService: ReportDataService) {
+        this.advancedPagination = 1;
+        this.pageSize = 20;
+    }
 
     ngOnInit() {
         this.reportDataService.reportsByInsurer.subscribe(
@@ -24,6 +25,16 @@ export class ReportsComponent implements OnInit {
                 console.log(error.message);
             }
         );
+    }
+
+    public downloadPDF(report: Report) {
+        const pdfString = report.pdfReport;
+        const pdf = atob(pdfString);
+        console.log('File Size:', Math.round(pdf.length / 1024), 'KB');
+        console.log('PDF Version:', pdf.match(/^.PDF-([0-9.]+)/)[1]);
+        console.log('Create Date:', pdf.match(/<xmp:CreateDate>(.+?)<\/xmp:CreateDate>/)[1]);
+        console.log('Modify Date:', pdf.match(/<xmp:ModifyDate>(.+?)<\/xmp:ModifyDate>/)[1]);
+        console.log('Creator Tool:', pdf.match(/<xmp:CreatorTool>(.+?)<\/xmp:CreatorTool>/)[1]);
     }
 
     get reports() {
