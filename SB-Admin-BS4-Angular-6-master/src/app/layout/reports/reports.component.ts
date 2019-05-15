@@ -29,6 +29,15 @@ export class ReportsComponent implements OnInit {
 
     public downloadPDF(report: Report) {
         const pdfString = report.pdfReport;
+
+        const linkSource = 'data:application/pdf;base64,' + pdfString;
+        const downloadLink = document.createElement('a');
+        const fileName = 'sample.pdf';
+
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+
         const pdf = atob(pdfString);
         console.log('File Size:', Math.round(pdf.length / 1024), 'KB');
         console.log('PDF Version:', pdf.match(/^.PDF-([0-9.]+)/)[1]);
