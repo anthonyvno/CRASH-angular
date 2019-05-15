@@ -13,7 +13,7 @@
         <div class="col col-sm-8">
             <div class="card mb-3">
                 <div class="card-header">
-                    Line Chart
+                    Aflopende groene kaarten
                 </div>
                 <div class="card-body">
                     <canvas
@@ -38,7 +38,7 @@
         <div  class="col col-sm-6">
             <div class="card mb-3">
                 <div class="card-header">
-                    Bar Chart
+                    Reports per maand
                 </div>
                 <div *ngIf="isLoaded" class="card-body">
                     <canvas
@@ -53,20 +53,16 @@
                     >
                     </canvas>
                 </div>
-                <div class="card-footer">
-                    <button class="btn btn-info btn-sm" (click)="randomize()">Update</button>
-                </div>
             </div>
         </div>
         <div class="col col-sm-6">
             <div class="card mb-3">
                 <div class="card-header">
-                    Doughnut Chart
+                    Ongevallen per type voertuig
                 </div>
-                <div class="card-body">
+                <div *ngIf="isLoaded" class="card-body">
                     <canvas
                         baseChart
-                        height="180px"
                         [data]="doughnutChartData"
                         [labels]="doughnutChartLabels"
                         [chartType]="doughnutChartType"

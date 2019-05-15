@@ -4,6 +4,7 @@ import { ReportDataService } from '../report-data.service';
 import { Insurer } from '../model/insurer.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Report } from '../model/report.model';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
     selector: 'app-dashboard',
@@ -34,49 +35,21 @@ export class DashboardComponent implements OnInit {
     ];
     // lineChart
     public lineChartData: Array<any> = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-        { data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C' }
+        { data: [17, 30, 30, 44, 60, 67, 71], label: 'Jelle Vossen' },
+        { data: [12, 39, 39, 51, 56, 78, 103], label: 'Hamdi Harbaoui' },
+        { data: [12, 12, 32, 32, 42, 52, 59], label: 'Jérémy Perbet' }
     ];
-    public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    public lineChartLabels: Array<any> = ['2013', '2014', '2015', '2016', '2017', '2018', '2019'];
     public lineChartOptions: any = {
         responsive: true
     };
-    public lineChartColors: Array<any> = [
-        {
-            // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        },
-        {
-            // dark grey
-            backgroundColor: 'rgba(77,83,96,0.2)',
-            borderColor: 'rgba(77,83,96,1)',
-            pointBackgroundColor: 'rgba(77,83,96,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(77,83,96,1)'
-        },
-        {
-            // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        }
-    ];
+    public lineChartColors: Array<any>;
     public lineChartLegend: boolean;
     public lineChartType: string;
 
     // Doughnut
     public doughnutChartLabels: string[];
-    public doughnutChartData: number[] = [350, 100, 50];
+    public doughnutChartData: number[] = [0, 0, 0, 0];
     public doughnutChartType: string;
 
     // BARCHART
@@ -119,7 +92,19 @@ export class DashboardComponent implements OnInit {
     initializeBarChart(reports: Report[]) {
         this.barChartOptions = {
             scaleShowVerticalLines: false,
-            responsive: true
+            responsive: true,
+            options: {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                min: 0, // it is for ignoring negative step.
+                                beginAtZero: true,
+                                precision: 0
+                        }
+                    ]
+                }
+            }
         };
         this.barChartType = 'bar';
         this.barChartLegend = true;
@@ -153,15 +138,41 @@ export class DashboardComponent implements OnInit {
             }
         });
         this.barChartData = [{ data: dataForBarChart, label: 'Aantal reports' }];
-        console.log(dataForBarChart);
     }
     initializeDoughnutChart(reports: Report[]) {
         this.doughnutChartType = 'doughnut';
-        this.doughnutChartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+        this.doughnutChartLabels = ['Auto', 'Vrachtwagen', 'Bus', 'Motorfiets'];
+        // this.doughnutChartData = [350, 100, 50];
+        this._reports.forEach(report => {
+            report.profiles.forEach(profile => {
+                switch (profile.vehicles[0].type) {
+                    case 'Auto': {
+                        this.doughnutChartData[0]++;
+                        break;
+                    }
+                    case 'Vrachtwagen': {
+                        this.doughnutChartData[1]++;
+                        break;
+                    }
+                    case 'Bus': {
+                        this.doughnutChartData[2]++;
+                        break;
+                    }
+                    case 'Motorfiets': {
+                        this.doughnutChartData[3]++;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            });
+        });
     }
     initializeLineChart(reports: Report[]) {
         this.lineChartLegend = true;
         this.lineChartType = 'line';
+        this.initializeLines();
     }
 
     public chartClicked(e: any): void {
@@ -172,11 +183,35 @@ export class DashboardComponent implements OnInit {
         // console.log(e);
     }
 
-    public randomize(): void {
-        // Only Change 3 values
-        const data = [Math.round(Math.random() * 100), 59, 80, Math.random() * 100, 56, Math.random() * 100, 40];
-        const clone = JSON.parse(JSON.stringify(this.barChartData));
-        clone[0].data = data;
-        this.barChartData = clone;
+    public initializeLines() {
+        this.lineChartColors = [
+            {
+                // grey
+                backgroundColor: 'rgb(170,10,47, 0.0)',
+                borderColor: 'rgba(0,120,191,1)',
+                pointBackgroundColor: 'rgba(148,159,177,1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+            },
+            {
+                // dark grey
+                backgroundColor: 'rgb(170,10,47, 0.0)',
+                borderColor: 'rgba(170,10,47, 1)',
+                pointBackgroundColor: 'rgba(77,83,96,1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(77,83,96,1)'
+            },
+            {
+                // grey
+                backgroundColor: 'rgba(148,159,177,0.0)',
+                borderColor: 'rgb(0,0,0)',
+                pointBackgroundColor: 'rgba(148,159,177,1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+            }
+        ];
     }
 }
