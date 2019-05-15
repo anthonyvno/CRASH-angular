@@ -39,6 +39,7 @@ export class ReportsComponent implements OnInit {
         downloadLink.href = linkSource;
         downloadLink.download = fileName;
         downloadLink.click();
+
         const pdf = atob(pdfString);
         report.toJSON();
     }
