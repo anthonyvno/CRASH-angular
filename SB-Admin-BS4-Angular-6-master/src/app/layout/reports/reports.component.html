@@ -1,5 +1,68 @@
 <div>
     <app-page-header [heading]="'Reports'" [icon]="'fa-th-list'"></app-page-header>
+    <div class="row ">
+        <div class=" mb-3 col-sm-3 input-group stylish-input-group">
+            <input
+                (keyup)="filterInsuranceNumber$.next($event.target.value)"
+                type="text"
+                class="form-control"
+                placeholder="Verzekeringsnummer"
+                id="filter"
+                name="filter"
+                #filter
+            />
+            <span class="input-group-append">
+                <button class="btn btn-secondary" type="button" disabled>
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+        <div class="mb-3 col-sm-3 input-group stylish-input-group">
+            <input
+                (keyup)="filterPostalCode$.next($event.target.value)"
+                type="text"
+                class="form-control"
+                placeholder="Postcode"
+                id="filter"
+                name="filter"
+                #filter
+            />
+            <span class="input-group-append">
+                <button class="btn btn-secondary" type="button" disabled>
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+
+        <div class="mb-3 col-sm-3 input-group stylish-input-group">
+            <input type="text" class="form-control" placeholder="Van" id="filter" name="filter" #filter ngbDatepicker #d="ngbDatepicker" />
+            <span class="input-group-append">
+                <button class="btn btn-secondary" (click)="d.toggle()">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </div>
+
+        <div class="mb-3 col-sm-3 input-group stylish-input-group">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Tot"
+                id="filter"
+                name="filter"
+                #filter
+                ngbDatepicker
+                tem
+                #d2="ngbDatepicker"
+            />
+            <span class="input-group-append">
+                <button class="btn btn-secondary" (click)="d2.toggle()">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+
     <div class="card mb-3">
         <div class="card-header">Hoverable rows</div>
         <table class="card-body table table-hover">
@@ -7,23 +70,25 @@
                 <tr>
                     <th>Datum aanrijding</th>
                     <th>Plaats aanrijding</th>
-                    <th># Verzekerd bij {{insurer}}</th>
+                    <th># Verzekerd bij {{ insurer }}</th>
                     <th>Download</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container
                     *ngFor="
-                        let report of reports | slice: (advancedPagination - 1) * pageSize:(advancedPagination - 1) * pageSize + pageSize
+                        let report of reports
+                            | insuranceNumberFilter: filterInsuranceNumberSearch
+                            | postalCodeFilter: filterPostalCodeSearch
+                            | slice: (advancedPagination - 1) * pageSize:(advancedPagination - 1) * pageSize + pageSize
                     "
                 >
                     <tr>
                         <th scope="row">{{ report.dateCrash | date: 'dd-MM-yyyy HH:mm' }}</th>
                         <td>{{ report.street }} {{ report.streetNumber }}, {{ report.postalCode }}</td>
-                        <td>{{report |insuredByLoggedInInsurer}}</td>
+                        <td>{{ report | insuredByLoggedInInsurer }}</td>
                         <td>
                             <button class="btn-primary" (click)="downloadPDF(report)"><i class="fa fa-download"></i> PDF</button>
-                            <button class="ml-3 btn-primary" (click)="downloadExcel(report)"><i class="fa fa-download"></i> Excel</button>
                         </td>
                     </tr>
                 </ng-container>
@@ -31,13 +96,23 @@
         </table>
     </div>
 
-    <ngb-pagination
-        [collectionSize]="reports.length"
-        [(page)]="advancedPagination"
-        [pageSize]="pageSize"
-        [rotate]="true"
-        [ellipses]="false"
-        [boundaryLinks]="true"
-    ></ngb-pagination>
+    <div class="row">
+        <div class="col col-sm-5">
+            <ngb-pagination
+                [collectionSize]="reports.length"
+                [(page)]="advancedPagination"
+                [pageSize]="pageSize"
+                [rotate]="true"
+                [ellipses]="false"
+                [boundaryLinks]="true"
+            ></ngb-pagination>
+        </div>
+        <div class="col col-xl-7  ">
+            <button class="mr-3 btn-primary" style="float:right;" (click)="downloadExcel(report)">
+                <i class="fa fa-download"></i> Excel
+            </button>
+        </div>
+    </div>
+
     <div class="alert alert-info"><b>Current page: </b>{{ advancedPagination }}</div>
 </div>

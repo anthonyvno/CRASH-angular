@@ -7,6 +7,8 @@ import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports.component';
 import { PageHeaderModule } from '../../shared';
 import { InsuredByLoggedInInsurerPipe } from './insured-by-logged-in-insurer.pipe';
+import { InsuranceNumberFilterPipe } from './insurance-number-filter.pipe';
+import { PostalCodeFilterPipe } from './postal-code-filter.pipe';
 
 @NgModule({
     imports: [
@@ -19,7 +21,9 @@ import { InsuredByLoggedInInsurerPipe } from './insured-by-logged-in-insurer.pip
     ],
     declarations: [
         ReportsComponent,
-        InsuredByLoggedInInsurerPipe
+        InsuredByLoggedInInsurerPipe,
+        InsuranceNumberFilterPipe,
+        PostalCodeFilterPipe
     ]
 })
 export class ReportsModule {}
