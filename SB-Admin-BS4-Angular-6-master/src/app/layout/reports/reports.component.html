@@ -35,7 +35,20 @@
         </div>
 
         <div class="mb-3 col-sm-3 input-group stylish-input-group">
-            <input type="text" class="form-control" placeholder="Van" id="filter" name="filter" #filter ngbDatepicker #d="ngbDatepicker" />
+            <input
+                (keypress)="afterDateFilter($event.target.value)"
+                (click)="afterDateFilter($event.target.value)"
+                (dateSelect)="clickOnInput('filterAfter')"
+                type="text"
+                class="form-control"
+                placeholder="Van"
+                id="filterAfter"
+                name="filterAfter"
+                #filterAfter
+                ngbDatepicker
+                #d="ngbDatepicker"
+                d.onchange="afterDateFilter($event.target.value)"
+            />
             <span class="input-group-append">
                 <button class="btn btn-secondary" (click)="d.toggle()">
                     <i class="fa fa-calendar"></i>
@@ -45,12 +58,15 @@
 
         <div class="mb-3 col-sm-3 input-group stylish-input-group">
             <input
+            (keypress)="beforeDateFilter($event.target.value)"
+                (click)="beforeDateFilter($event.target.value)"
+                (dateSelect)="clickOnInput('filterBefore')"
                 type="text"
                 class="form-control"
                 placeholder="Tot"
-                id="filter"
-                name="filter"
-                #filter
+                id="filterBefore"
+                name="filterBefore"
+                #filterBefore
                 ngbDatepicker
                 tem
                 #d2="ngbDatepicker"
@@ -80,6 +96,8 @@
                         let report of reports
                             | insuranceNumberFilter: filterInsuranceNumberSearch
                             | postalCodeFilter: filterPostalCodeSearch
+                            | beforeDateFilter: filterBeforeDateSearch
+                            | afterDateFilter: filterAfterDateSearch
                             | slice: (advancedPagination - 1) * pageSize:(advancedPagination - 1) * pageSize + pageSize
                     "
                 >

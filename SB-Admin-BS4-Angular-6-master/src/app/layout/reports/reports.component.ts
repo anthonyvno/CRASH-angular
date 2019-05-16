@@ -4,21 +4,21 @@ import { Report } from '../model/report.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
-import { NgbDateCustomParserFormatter} from './dateformat';
+import { NgbDateCustomParserFormatter } from './dateformat';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-reports',
     templateUrl: './reports.component.html',
     styleUrls: ['./reports.component.scss'],
-    providers: [
-        {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}
-       ]
+    providers: [{ provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }]
 })
 export class ReportsComponent implements OnInit {
     public filterInsuranceNumberSearch: string;
     public filterInsuranceNumber$ = new Subject<string>();
     public filterPostalCodeSearch: string;
+    public filterAfterDateSearch: string;
+    public filterBeforeDateSearch: string;
     public filterPostalCode$ = new Subject<string>();
 
     constructor(private reportDataService: ReportDataService) {
@@ -52,6 +52,19 @@ export class ReportsComponent implements OnInit {
             }
         );
     }
+
+    afterDateFilter(filter: string) {
+        this.filterAfterDateSearch = filter;
+      }
+
+      beforeDateFilter(filter: string) {
+        this.filterBeforeDateSearch = filter;
+      }
+
+      clickOnInput(filter: string) {
+          const input = document.getElementById(filter);
+          input.click();
+      }
 
     public downloadPDF(report: Report) {
         const pdfString = report.pdfReport;

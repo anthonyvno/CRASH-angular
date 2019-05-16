@@ -118,7 +118,7 @@ export class DashboardComponent implements OnInit {
         ];
 
         const lastSixMonthsReports = reports.filter(
-            report => new Date(report.dateReportReceived) > new Date(new Date().setMonth(this._today.getMonth() - 6))
+            report => new Date(report.dateCrash) > new Date(new Date().setMonth(this._today.getMonth() - 6))
         );
 
         const dataForBarChart = [0, 0, 0, 0, 0, 0];
@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit {
                 } else {
                     counter = i;
                 }
-                if (new Date(report.dateReportReceived).getMonth() === counter) {
+                if (new Date(report.dateCrash).getMonth() === counter) {
                     dataForBarChart[counter2]++;
                 }
                 counter2++;

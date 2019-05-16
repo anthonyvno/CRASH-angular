@@ -9,6 +9,8 @@ import { PageHeaderModule } from '../../shared';
 import { InsuredByLoggedInInsurerPipe } from './insured-by-logged-in-insurer.pipe';
 import { InsuranceNumberFilterPipe } from './insurance-number-filter.pipe';
 import { PostalCodeFilterPipe } from './postal-code-filter.pipe';
+import { BeforeDateFilterPipe } from './before-date-filter.pipe';
+import { AfterDateFilterPipe } from './after-date-filter.pipe';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { PostalCodeFilterPipe } from './postal-code-filter.pipe';
         ReportsComponent,
         InsuredByLoggedInInsurerPipe,
         InsuranceNumberFilterPipe,
-        PostalCodeFilterPipe
+        PostalCodeFilterPipe,
+        BeforeDateFilterPipe,
+        AfterDateFilterPipe
     ]
 })
 export class ReportsModule {}
