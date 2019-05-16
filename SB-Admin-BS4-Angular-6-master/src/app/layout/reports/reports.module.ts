@@ -10,6 +10,7 @@ import { InsuredByLoggedInInsurerPipe } from './insured-by-logged-in-insurer.pip
 import { InsuranceNumberFilterPipe } from './insurance-number-filter.pipe';
 import { PostalCodeFilterPipe } from './postal-code-filter.pipe';
 
+
 @NgModule({
     imports: [
         CommonModule,
