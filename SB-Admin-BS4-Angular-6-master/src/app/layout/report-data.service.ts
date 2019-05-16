@@ -4,6 +4,7 @@ import { Insurer } from './model/insurer.model';
 import { Observable } from 'rxjs';
 import { map, filter, find } from 'rxjs/operators';
 import { Report } from './model/report.model';
+import * as FileSaver from 'file-saver';
 
 @Injectable({
     providedIn: 'root'
@@ -27,5 +28,17 @@ export class ReportDataService {
         return this.http
             .get(`${this._appUrl}/reports/insurer/` + insurerName, { headers })
             .pipe(map((list: any[]): Report[] => list.map(Report.fromJson)));
+    }
+
+    reportToExcel(id: number) {
+        console.log(`${this._appUrl}/reports/downloadexcel/` + id.toString());
+        const headers = new HttpHeaders({ Authorization: 'Basic ' + sessionStorage.getItem('token') });
+        const httpOptions = {
+            responseType: 'blob' as 'json',
+            headers: new HttpHeaders({
+                Authorization: 'Basic ' + sessionStorage.getItem('token')
+            })
+        };
+        return this.http.get(`${this._appUrl}/reports/downloadexcel/` + id.toString(), httpOptions);
     }
 }

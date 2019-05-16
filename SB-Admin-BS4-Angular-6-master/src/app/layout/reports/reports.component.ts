@@ -11,8 +11,6 @@ import * as XLSX from 'xlsx';
     styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-
-
     constructor(private reportDataService: ReportDataService) {
         this.advancedPagination = 1;
         this.pageSize = 20;
@@ -41,27 +39,24 @@ export class ReportsComponent implements OnInit {
         downloadLink.click();
 
         const pdf = atob(pdfString);
-        report.toJSON();
+        console.log(report.toJSON());
+        console.log(report);
     }
-
 
     public downloadExcel(report: Report): void {
-        const json = [report.toJSON()];
-        console.log(json);
-        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-        const workbook: XLSX.WorkBook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-        const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        this.saveAsExcelFile(excelBuffer, 'test');
+        console.log(report.id);
+        const EXCEL_EXTENSION = '.xlsx';
+        this.reportDataService.reportToExcel(report.id).subscribe((data) => {
+
+            const downloadURL = window.URL.createObjectURL(data);
+            const link = document.createElement('a');
+            link.href = downloadURL;
+            link.download = 'report.xlsx';
+            link.click();
+
+          });
     }
 
-    private saveAsExcelFile(buffer: any, fileName: string): void {
-        const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-const EXCEL_EXTENSION = '.xlsx';
-        const data: Blob = new Blob([buffer], {
-            type: EXCEL_TYPE
-        });
-        FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-    }
     get reports() {
         return this._reports;
     }
