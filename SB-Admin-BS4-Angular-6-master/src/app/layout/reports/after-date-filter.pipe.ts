@@ -11,6 +11,6 @@ export class AfterDateFilterPipe implements PipeTransform {
         }
         const splittedDate = afterDate.split('/');
         const afterDateAsDate = new Date(parseInt(splittedDate[2]), parseInt(splittedDate[1]) - 1 , parseInt(splittedDate[0]));
-        return reports.filter(rep => new Date(rep.dateCrash) > afterDateAsDate);
+        return reports.filter(rep => new Date(rep.dateCrash) >= afterDateAsDate);
     }
 }

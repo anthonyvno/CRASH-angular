@@ -23,9 +23,9 @@
                 type="text"
                 class="form-control"
                 placeholder="Postcode"
-                id="filter"
-                name="filter"
-                #filter
+                id="filterPostcode"
+                name="filterPostcode"
+                #filterPostcode
             />
             <span class="input-group-append">
                 <button class="btn btn-secondary" type="button" disabled>
@@ -36,7 +36,7 @@
 
         <div class="mb-3 col-sm-3 input-group stylish-input-group">
             <input
-                (keypress)="afterDateFilter($event.target.value)"
+                (keyup)="afterDateFilter($event.target.value)"
                 (click)="afterDateFilter($event.target.value)"
                 (dateSelect)="clickOnInput('filterAfter')"
                 type="text"
@@ -58,7 +58,7 @@
 
         <div class="mb-3 col-sm-3 input-group stylish-input-group">
             <input
-            (keypress)="beforeDateFilter($event.target.value)"
+            (keyup)="beforeDateFilter($event.target.value)"
                 (click)="beforeDateFilter($event.target.value)"
                 (dateSelect)="clickOnInput('filterBefore')"
                 type="text"

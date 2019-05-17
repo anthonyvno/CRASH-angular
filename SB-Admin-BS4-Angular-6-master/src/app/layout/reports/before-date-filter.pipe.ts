@@ -11,6 +11,6 @@ export class BeforeDateFilterPipe implements PipeTransform {
         }
         const splittedDate = beforeDate.split('/');
         const beforeDateAsDate = new Date(parseInt(splittedDate[2]), parseInt(splittedDate[1]) - 1, parseInt(splittedDate[0]));
-        return reports.filter(rep => new Date(rep.dateCrash) < beforeDateAsDate);
+        return reports.filter(rep => new Date(rep.dateCrash) <= beforeDateAsDate);
     }
 }
