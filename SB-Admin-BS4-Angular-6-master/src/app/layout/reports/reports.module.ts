@@ -11,6 +11,7 @@ import { InsuranceNumberFilterPipe } from './insurance-number-filter.pipe';
 import { PostalCodeFilterPipe } from './postal-code-filter.pipe';
 import { BeforeDateFilterPipe } from './before-date-filter.pipe';
 import { AfterDateFilterPipe } from './after-date-filter.pipe';
+import { VehicleTypeFilterPipe } from './vehicle-type-filter.pipe';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { AfterDateFilterPipe } from './after-date-filter.pipe';
         InsuranceNumberFilterPipe,
         PostalCodeFilterPipe,
         BeforeDateFilterPipe,
-        AfterDateFilterPipe
+        AfterDateFilterPipe,
+        VehicleTypeFilterPipe
     ]
 })
 export class ReportsModule {}

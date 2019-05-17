@@ -29,6 +29,7 @@
     "@nikhil200816/ngx-json-to-csvgenerator": "^1.0.2",
     "angular2-json2csv": "^1.1.2",
     "angular5-csv": "^0.2.11",
+    "bootstrap-select": "^1.13.10",
     "chart.js": "2.7.3",
     "core-js": "2.5.7",
     "file-saver": "^2.0.2",

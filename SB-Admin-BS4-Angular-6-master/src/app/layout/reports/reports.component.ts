@@ -19,6 +19,7 @@ export class ReportsComponent implements OnInit {
     public filterPostalCodeSearch: string;
     public filterAfterDateSearch: string;
     public filterBeforeDateSearch: string;
+    public filterVehicleTypeSearch: string;
     public filterPostalCode$ = new Subject<string>();
 
     constructor(private reportDataService: ReportDataService) {
@@ -53,18 +54,22 @@ export class ReportsComponent implements OnInit {
         );
     }
 
+    vehicleTypeFilter(filter: string) {
+        this.filterVehicleTypeSearch = filter;
+    }
+
     afterDateFilter(filter: string) {
         this.filterAfterDateSearch = filter;
-      }
+    }
 
-      beforeDateFilter(filter: string) {
+    beforeDateFilter(filter: string) {
         this.filterBeforeDateSearch = filter;
-      }
+    }
 
-      clickOnInput(filter: string) {
-          const input = document.getElementById(filter);
-          input.click();
-      }
+    clickOnInput(filter: string) {
+        const input = document.getElementById(filter);
+        input.click();
+    }
 
     public downloadPDF(report: Report) {
         const pdfString = report.pdfReport;
@@ -96,7 +101,6 @@ export class ReportsComponent implements OnInit {
         } catch (e) {
             console.log(e);
         }
-
     }
 
     get reports() {

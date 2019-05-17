@@ -10,7 +10,7 @@ import * as FileSaver from 'file-saver';
     providedIn: 'root'
 })
 export class ReportDataService {
-    private readonly _appUrl = 'http://localhost:8080';
+    private readonly _appUrl = 'http://52.166.147.106:8080';
 
     constructor(private http: HttpClient) {}
 

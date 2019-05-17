@@ -58,7 +58,7 @@
 
         <div class="mb-3 col-sm-3 input-group stylish-input-group">
             <input
-            (keyup)="beforeDateFilter($event.target.value)"
+                (keyup)="beforeDateFilter($event.target.value)"
                 (click)="beforeDateFilter($event.target.value)"
                 (dateSelect)="clickOnInput('filterBefore')"
                 type="text"
@@ -77,10 +77,22 @@
                 </button>
             </span>
         </div>
+        
     </div>
 
     <div class="card mb-3">
-        <div class="card-header">Hoverable rows</div>
+        <div class="row card-header">
+            <div class="col col-sm-8">Lijst formulieren</div>
+            <div class="mb-3 col col-sm-4">
+                    <select name="type" class="form-control" style="float: right;" (change)="vehicleTypeFilter($event.target.value)">
+                        <option value="" selected disabled hidden>Type voertuig</option>
+                        <option value="Auto">Auto</option>
+                        <option value="Vrachtwagen">Vrachtwagen</option>
+                        <option value="Motorfiets">Motorfiets</option>
+                        <option value="Bus">Bus</option>
+                        <option value="Alle">Alle</option>
+                    </select>
+                </div></div>
         <table class="card-body table table-hover">
             <thead>
                 <tr>
@@ -96,6 +108,7 @@
                         let report of reports
                             | insuranceNumberFilter: filterInsuranceNumberSearch
                             | postalCodeFilter: filterPostalCodeSearch
+                            | vehicleTypeFilter: filterVehicleTypeSearch
                             | beforeDateFilter: filterBeforeDateSearch
                             | afterDateFilter: filterAfterDateSearch
                             | slice: (advancedPagination - 1) * pageSize:(advancedPagination - 1) * pageSize + pageSize
