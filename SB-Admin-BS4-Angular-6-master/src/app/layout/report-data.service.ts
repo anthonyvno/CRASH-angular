@@ -30,15 +30,16 @@ export class ReportDataService {
             .pipe(map((list: any[]): Report[] => list.map(Report.fromJson)));
     }
 
-    reportToExcel(id: number) {
-        console.log(`${this._appUrl}/reports/downloadexcel/` + id.toString());
+    reportToExcel(idArray: number[]) {
+        console.log(`${this._appUrl}/reports/downloadexcel`);
         const headers = new HttpHeaders({ Authorization: 'Basic ' + sessionStorage.getItem('token') });
         const httpOptions = {
             responseType: 'blob' as 'json',
+            // param: idArray,
             headers: new HttpHeaders({
                 Authorization: 'Basic ' + sessionStorage.getItem('token')
             })
         };
-        return this.http.get(`${this._appUrl}/reports/downloadexcel/` + id.toString(), httpOptions);
+        return this.http.post(`${this._appUrl}/reports/downloadexcel/`, idArray, httpOptions);
     }
 }

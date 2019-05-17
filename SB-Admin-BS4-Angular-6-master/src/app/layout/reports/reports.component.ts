@@ -80,16 +80,23 @@ export class ReportsComponent implements OnInit {
         console.log(report);
     }
 
-    public downloadExcel(report: Report): void {
-        console.log(report.id);
+    public downloadExcel(reports: Report[]): void {
+        // console.log(report.id);
+        const idArrayVanReports = reports.map(reports => reports.id);
+        console.log(idArrayVanReports);
         const EXCEL_EXTENSION = '.xlsx';
-        this.reportDataService.reportToExcel(report.id).subscribe(data => {
-            const downloadURL = window.URL.createObjectURL(data);
-            const link = document.createElement('a');
-            link.href = downloadURL;
-            link.download = 'report.xlsx';
-            link.click();
-        });
+        try {
+            this.reportDataService.reportToExcel(idArrayVanReports).subscribe(data => {
+                const downloadURL = window.URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = downloadURL;
+                link.download = 'report.xlsx';
+                link.click();
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
     }
 
     get reports() {
