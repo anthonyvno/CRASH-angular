@@ -14,6 +14,7 @@ import { Report } from '../model/report.model';
 })
 export class DashboardComponent implements OnInit {
     private _insurers: Insurer[];
+    public reportsToday: number;
     public isLoaded = false;
     private _today: Date;
     private errorMsg: string;
@@ -74,6 +75,7 @@ export class DashboardComponent implements OnInit {
         this.reportDataService.reportsByInsurer.subscribe(
             reports => {
                 this._reports = reports;
+                this.reportsToday = reports.filter(report => new Date(report.dateReportReceived) >= new Date(this._today)).length;
                 this.initializeCharts(reports);
             },
             (error: HttpErrorResponse) => {
@@ -207,7 +209,7 @@ export class DashboardComponent implements OnInit {
                 }
                 if (new Date(report.dateCrash).getMonth() === counter) {
                     report.profiles.forEach(profile => {
-                        if (profile.vehicles[0].insurance.insurer.name === this.username) {
+                        if (profile.vehicles[0].insurance.insurer.name.toLowerCase() === this.username.toLowerCase()) {
                             switch (profile.vehicles[0].type) {
                                 case 'Auto':
                                     carDataForStackedBarChart[counter2]++;
