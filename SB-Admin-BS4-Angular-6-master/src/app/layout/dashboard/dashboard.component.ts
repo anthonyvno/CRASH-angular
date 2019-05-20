@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit {
                                 case 'Auto':
                                     carDataForStackedBarChart[counter2]++;
                                     break;
-                                case 'Vrachwagen':
+                                case 'Vrachtwagen':
                                     truckDataForStackedBarChart[counter2]++;
                                     break;
                                 case 'Motorfiets':
