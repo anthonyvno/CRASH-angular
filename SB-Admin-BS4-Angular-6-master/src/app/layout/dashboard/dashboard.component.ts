@@ -75,7 +75,9 @@ export class DashboardComponent implements OnInit {
         this.reportDataService.reportsByInsurer.subscribe(
             reports => {
                 this._reports = reports;
-                this.reportsToday = reports.filter(report => new Date(report.dateReportReceived) >= new Date(this._today)).length;
+                this.reportsToday = reports.filter(
+                    report => new Date(report.dateReportReceived) >= new Date(this._today.getFullYear(), this._today.getMonth(), this._today.getDate())
+                ).length;
                 this.initializeCharts(reports);
             },
             (error: HttpErrorResponse) => {
