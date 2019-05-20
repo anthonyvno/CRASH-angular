@@ -128,7 +128,6 @@ export class Report {
     }
 
     static fromJson(json: any): Report {
-        console.log(json);
         if (json != null) {
             const ins = new Report(
                 json.id,

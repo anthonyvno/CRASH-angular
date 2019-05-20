@@ -74,7 +74,16 @@ export class DashboardComponent implements OnInit {
         this._today = new Date();
         this.reportDataService.reportsByInsurer.subscribe(
             reports => {
-                this._reports = reports;
+                this._reports = reports.sort((a: Report, b: Report) => {
+                    if (new Date(a.dateReportReceived) < new Date(b.dateReportReceived)) {
+                      return -1;
+                    } else if (new Date(a.dateReportReceived) > new Date(b.dateReportReceived)) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
+                  });
+                 
                 this.reportsToday = reports.filter(
                     report =>
                         new Date(report.dateReportReceived) >=

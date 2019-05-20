@@ -52,7 +52,15 @@ export class ReportsComponent implements OnInit {
 
     ngOnInit() {
         this.reportDataService.reportsByInsurer.subscribe(
-            reports => (this._reports = reports),
+            reports => (this._reports = this._reports = reports.sort((a: Report, b: Report) => {
+                if (new Date(a.dateReportReceived) > new Date(b.dateReportReceived)) {
+                  return -1;
+                } else if (new Date(a.dateReportReceived) < new Date(b.dateReportReceived)) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })),
             (error: HttpErrorResponse) => {
                 console.log(error.message);
             }
