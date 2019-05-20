@@ -76,7 +76,9 @@ export class DashboardComponent implements OnInit {
             reports => {
                 this._reports = reports;
                 this.reportsToday = reports.filter(
-                    report => new Date(report.dateReportReceived) >= new Date(this._today.getFullYear(), this._today.getMonth(), this._today.getDate())
+                    report =>
+                        new Date(report.dateReportReceived) >=
+                        new Date(this._today.getFullYear(), this._today.getMonth(), this._today.getDate())
                 ).length;
                 this.initializeCharts(reports);
             },
@@ -106,18 +108,17 @@ export class DashboardComponent implements OnInit {
         this.barChartOptions = {
             scaleShowVerticalLines: false,
             responsive: true,
-            options: {
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0, // it is for ignoring negative step.
-                                beginAtZero: true,
-                                precision: 0
-                            }
+
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            min: 0, // it is for ignoring negative step.
+                            beginAtZero: true,
+                            precision: 0
                         }
-                    ]
-                }
+                    }
+                ]
             }
         };
         this.barChartType = 'bar';
