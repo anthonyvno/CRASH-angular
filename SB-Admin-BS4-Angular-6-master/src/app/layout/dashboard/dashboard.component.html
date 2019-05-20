@@ -74,5 +74,25 @@
             </div>
         </div>
     </div>
+    <div  class="col col-sm-12">
+        <div class="card mb-3">
+            <div class="card-header">
+                Reports per maand
+            </div>
+            <div *ngIf="isLoaded" class="card-body">
+                <canvas
+                    baseChart
+                    [datasets]="stackedBarChartData"
+                    [labels]="stackedBarChartLabels"
+                    [options]="stackedBarChartOptions"
+                    [legend]="stackedBarChartLegend"
+                    [chartType]="stackedBarChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"
+                >
+                </canvas>
+            </div>
+        </div>
+    </div>
     <hr />
 </div>

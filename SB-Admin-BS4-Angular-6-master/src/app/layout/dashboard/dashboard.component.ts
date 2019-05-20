@@ -4,7 +4,6 @@ import { ReportDataService } from '../report-data.service';
 import { Insurer } from '../model/insurer.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Report } from '../model/report.model';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
     selector: 'app-dashboard',
@@ -60,6 +59,13 @@ export class DashboardComponent implements OnInit {
 
     public barChartData: any[];
 
+    // StackedBarChart
+    public stackedBarChartOptions: any;
+    public stackedBarChartData: any[];
+    public stackedBarChartLabels: string[];
+    public stackedBarChartType: string;
+    public stackedBarChartLegend: boolean;
+
     constructor(private reportDataService: ReportDataService) {}
 
     ngOnInit() {
@@ -86,6 +92,7 @@ export class DashboardComponent implements OnInit {
         this.initializeBarChart(reports);
         this.initializeDoughnutChart(reports);
         this.initializeLineChart(reports);
+        this.initializeStackedBarChart(reports);
         this.isLoaded = true;
     }
 
@@ -100,7 +107,8 @@ export class DashboardComponent implements OnInit {
                             ticks: {
                                 min: 0, // it is for ignoring negative step.
                                 beginAtZero: true,
-                                precision: 0}
+                                precision: 0
+                            }
                         }
                     ]
                 }
@@ -139,10 +147,84 @@ export class DashboardComponent implements OnInit {
         });
         this.barChartData = [{ data: dataForBarChart, label: 'Aantal reports' }];
     }
+
+    initializeStackedBarChart(reports: Report[]) {
+        this.stackedBarChartOptions = {
+            scaleShowVerticalLines: false,
+            responsive: true,
+                scales: {
+                    xAxes: [
+                        {
+                            stacked: true
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            stacked: true,
+                            ticks: {
+                                min: 0, // it is for ignoring negative step.
+                                beginAtZero: true,
+                                precision: 0
+                            }
+                        }
+                    ]
+            }
+        };
+        this.stackedBarChartType = 'bar';
+        this.stackedBarChartLegend = true;
+        this.stackedBarChartLabels = [
+            this.getMonthName(this._today.getMonth() - 5),
+            this.getMonthName(this._today.getMonth() - 4),
+            this.getMonthName(this._today.getMonth() - 3),
+            this.getMonthName(this._today.getMonth() - 2),
+            this.getMonthName(this._today.getMonth() - 1),
+            this.getMonthName(this._today.getMonth())
+        ];
+
+        const lastSixMonthsReports = reports.filter(
+            report => new Date(report.dateCrash) > new Date(new Date().setMonth(this._today.getMonth() - 6))
+        );
+
+        const dataForBarChart = [[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]];
+        /* lastSixMonthsReports.forEach(report => {
+            let counter = 0;
+            let counter2 = 0;
+            for (let i = this._today.getMonth() - 5; i <= this._today.getMonth(); i++) {
+                if (i < 0) {
+                    counter = i + 12;
+                } else {
+                    counter = i;
+                }
+                if (new Date(report.dateCrash).getMonth() === counter) {
+                    dataForBarChart[counter2]++;
+                }
+                counter2++;
+            }
+        });*/
+        this.stackedBarChartData = [
+            {
+                data: [2, 4, 12, 5, 7, 9],
+                label: 'Auto\'s'
+            },
+            {
+                data: [2, 4, 12, 5, 7, 9],
+                label: 'Vrachtwagens'
+            },
+            {
+                data: [2, 4, 12, 5, 7, 9],
+                label: 'Motorfietsen'
+            },
+            {
+                data: [2, 4, 12, 5, 7, 9],
+                label: 'Bussen'
+            },
+        ];
+
+    }
+
     initializeDoughnutChart(reports: Report[]) {
         this.doughnutChartType = 'doughnut';
         this.doughnutChartLabels = ['Auto', 'Vrachtwagen', 'Bus', 'Motorfiets'];
-        // this.doughnutChartData = [350, 100, 50];
         this._reports.forEach(report => {
             report.profiles.forEach(profile => {
                 switch (profile.vehicles[0].type) {
