@@ -13,18 +13,16 @@
         <div class="col col-sm-8">
             <div class="card mb-3">
                 <div class="card-header">
-                    Aflopende groene kaarten
+                    Aantal ongevallen per type voertuig van verzekerde bij {{username}}
                 </div>
-                <div class="card-body">
+                <div *ngIf="isLoaded" class="card-body">
                     <canvas
                         baseChart
-                        height="130"
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
-                        [options]="lineChartOptions"
-                        [colors]="lineChartColors"
-                        [legend]="lineChartLegend"
-                        [chartType]="lineChartType"
+                        [datasets]="stackedBarChartData"
+                        [labels]="stackedBarChartLabels"
+                        [options]="stackedBarChartOptions"
+                        [legend]="stackedBarChartLegend"
+                        [chartType]="stackedBarChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)"
                     >
@@ -71,26 +69,6 @@
                     >
                     </canvas>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div  class="col col-sm-12">
-        <div class="card mb-3">
-            <div class="card-header">
-                Reports per maand
-            </div>
-            <div *ngIf="isLoaded" class="card-body">
-                <canvas
-                    baseChart
-                    [datasets]="stackedBarChartData"
-                    [labels]="stackedBarChartLabels"
-                    [options]="stackedBarChartOptions"
-                    [legend]="stackedBarChartLegend"
-                    [chartType]="stackedBarChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"
-                >
-                </canvas>
             </div>
         </div>
     </div>

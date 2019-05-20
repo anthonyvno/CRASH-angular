@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
         'November',
         'December'
     ];
+    public username: string;
     // lineChart
     public lineChartData: Array<any> = [
         { data: [17, 30, 30, 44, 60, 67, 71], label: 'Jelle Vossen' },
@@ -79,6 +80,7 @@ export class DashboardComponent implements OnInit {
                 console.log(error.message);
             }
         );
+        this.username = atob(sessionStorage.getItem('token')).split(':')[0];
     }
 
     public getMonthName(month: number) {
@@ -126,7 +128,9 @@ export class DashboardComponent implements OnInit {
         ];
 
         const lastSixMonthsReports = reports.filter(
-            report => new Date(report.dateCrash) > new Date(new Date().setMonth(this._today.getMonth() - 6))
+            report =>
+                new Date(report.dateCrash) > new Date(new Date(this._today.getFullYear(), this._today.getMonth() - 6)) &&
+                new Date(report.dateCrash) < this._today
         );
 
         const dataForBarChart = [0, 0, 0, 0, 0, 0];
@@ -152,25 +156,25 @@ export class DashboardComponent implements OnInit {
         this.stackedBarChartOptions = {
             scaleShowVerticalLines: false,
             responsive: true,
-                scales: {
-                    xAxes: [
-                        {
-                            stacked: true
+            scales: {
+                xAxes: [
+                    {
+                        stacked: true
+                    }
+                ],
+                yAxes: [
+                    {
+                        stacked: true,
+                        ticks: {
+                            min: 0, // it is for ignoring negative step.
+                            beginAtZero: true,
+                            precision: 0
                         }
-                    ],
-                    yAxes: [
-                        {
-                            stacked: true,
-                            ticks: {
-                                min: 0, // it is for ignoring negative step.
-                                beginAtZero: true,
-                                precision: 0
-                            }
-                        }
-                    ]
+                    }
+                ]
             }
         };
-        this.stackedBarChartType = 'bar';
+        this.stackedBarChartType = 'horizontalBar';
         this.stackedBarChartLegend = true;
         this.stackedBarChartLabels = [
             this.getMonthName(this._today.getMonth() - 5),
@@ -182,11 +186,17 @@ export class DashboardComponent implements OnInit {
         ];
 
         const lastSixMonthsReports = reports.filter(
-            report => new Date(report.dateCrash) > new Date(new Date().setMonth(this._today.getMonth() - 6))
+            report =>
+                new Date(report.dateCrash) > new Date(new Date(this._today.getFullYear(), this._today.getMonth() - 6)) &&
+                new Date(report.dateCrash) < this._today
         );
 
-        const dataForBarChart = [[2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2], [2, 2, 2, 2]];
-        /* lastSixMonthsReports.forEach(report => {
+        const carDataForStackedBarChart = [0, 0, 0, 0, 0, 0];
+        const truckDataForStackedBarChart = [0, 0, 0, 0, 0, 0];
+        const motorBikeDataForStackedBarChart = [0, 0, 0, 0, 0, 0];
+        const busDataForStackedBarChart = [0, 0, 0, 0, 0, 0];
+
+        lastSixMonthsReports.forEach(report => {
             let counter = 0;
             let counter2 = 0;
             for (let i = this._today.getMonth() - 5; i <= this._today.getMonth(); i++) {
@@ -196,30 +206,46 @@ export class DashboardComponent implements OnInit {
                     counter = i;
                 }
                 if (new Date(report.dateCrash).getMonth() === counter) {
-                    dataForBarChart[counter2]++;
+                    report.profiles.forEach(profile => {
+                        if (profile.vehicles[0].insurance.insurer.name === this.username) {
+                            switch (profile.vehicles[0].type) {
+                                case 'Auto':
+                                    carDataForStackedBarChart[counter2]++;
+                                    break;
+                                case 'Vrachwagen':
+                                    truckDataForStackedBarChart[counter2]++;
+                                    break;
+                                case 'Motorfiets':
+                                    motorBikeDataForStackedBarChart[counter2]++;
+                                    break;
+                                case 'Bus':
+                                    busDataForStackedBarChart[counter2]++;
+                                    break;
+                            }
+                        }
+                    });
                 }
                 counter2++;
             }
-        });*/
+        });
         this.stackedBarChartData = [
             {
-                data: [2, 4, 12, 5, 7, 9],
+                data: carDataForStackedBarChart,
                 label: 'Auto\'s'
             },
             {
-                data: [2, 4, 12, 5, 7, 9],
+                data: truckDataForStackedBarChart,
                 label: 'Vrachtwagens'
             },
             {
-                data: [2, 4, 12, 5, 7, 9],
+                data: motorBikeDataForStackedBarChart,
                 label: 'Motorfietsen'
             },
             {
-                data: [2, 4, 12, 5, 7, 9],
+                data: busDataForStackedBarChart,
                 label: 'Bussen'
-            },
+            }
         ];
-
     }
 
     initializeDoughnutChart(reports: Report[]) {
