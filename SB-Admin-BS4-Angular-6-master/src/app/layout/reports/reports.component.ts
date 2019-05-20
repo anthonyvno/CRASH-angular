@@ -6,6 +6,11 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
 import { NgbDateCustomParserFormatter } from './dateformat';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { VehicleTypeFilterPipe } from './vehicle-type-filter.pipe';
+import { BeforeDateFilterPipe } from './before-date-filter.pipe';
+import { AfterDateFilterPipe } from './after-date-filter.pipe';
+import { InsuranceNumberFilterPipe } from './insurance-number-filter.pipe';
+import { PostalCodeFilterPipe } from './postal-code-filter.pipe';
 
 @Component({
     selector: 'app-reports',
@@ -86,7 +91,11 @@ export class ReportsComponent implements OnInit {
     }
 
     public downloadExcel(reports: Report[]): void {
-        // console.log(report.id);
+        reports = new VehicleTypeFilterPipe().transform(reports, this.filterVehicleTypeSearch);
+        reports = new BeforeDateFilterPipe().transform(reports, this.filterBeforeDateSearch);
+        reports = new AfterDateFilterPipe().transform(reports, this.filterAfterDateSearch);
+        reports = new InsuranceNumberFilterPipe().transform(reports, this.filterInsuranceNumberSearch);
+        reports = new PostalCodeFilterPipe().transform(reports, this.filterPostalCodeSearch);
         const idArrayVanReports = reports.map(reports => reports.id);
         console.log(idArrayVanReports);
         const EXCEL_EXTENSION = '.xlsx';

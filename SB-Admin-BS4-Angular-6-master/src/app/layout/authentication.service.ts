@@ -10,7 +10,7 @@ import { Insurer } from './model/insurer.model';
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private readonly url = 'http://localhost:8080/login';
+    private readonly url = 'http://52.166.147.106:8080/login';
 
     constructor(private http: HttpClient) {}
 
