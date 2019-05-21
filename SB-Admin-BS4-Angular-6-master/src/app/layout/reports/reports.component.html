@@ -80,7 +80,8 @@
         
     </div>
 
-    <div class="card mb-3">
+    
+    <div class="card mb-3" *ngIf="!loading">
         <div class="row card-header">
             <div class="col col-sm-8">Lijst formulieren</div>
             <div class="mb-3 col col-sm-4">
@@ -102,7 +103,10 @@
                     <th>Download</th>
                 </tr>
             </thead>
+            
             <tbody>
+                
+                    
                 <ng-container
                     *ngFor="
                         let report of reports
@@ -127,7 +131,7 @@
         </table>
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="!loading">
         <div class="col col-sm-5">
             <ngb-pagination
                 [collectionSize]="reports.length"
@@ -144,6 +148,5 @@
             </button>
         </div>
     </div>
-
-    <div class="alert alert-info"><b>Current page: </b>{{ advancedPagination }}</div>
+    
 </div>

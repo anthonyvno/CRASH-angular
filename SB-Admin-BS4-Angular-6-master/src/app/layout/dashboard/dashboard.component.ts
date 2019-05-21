@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
                       return 0;
                     }
                   });
-                 
+
                 this.reportsToday = reports.filter(
                     report =>
                         new Date(report.dateReportReceived) >=

@@ -17,6 +17,9 @@
                 <div class="card-header">
                     Aantal ongevallen per type voertuig van verzekerde bij {{username}}
                 </div>
+                <div class="centered" *ngIf="!isLoaded">
+                        <img src="../../../assets/images/spinner.gif" />
+                </div>
                 <div *ngIf="isLoaded" class="card-body">
                     <canvas
                         baseChart
@@ -40,6 +43,9 @@
                 <div class="card-header">
                     Reports per maand
                 </div>
+                <div class="centered" *ngIf="!isLoaded">
+                        <img src="../../../assets/images/spinner.gif" />
+                </div>
                 <div *ngIf="isLoaded" class="card-body">
                     <canvas
                         baseChart
@@ -59,6 +65,9 @@
             <div class="card mb-3">
                 <div class="card-header">
                     Ongevallen per type voertuig
+                </div>
+                <div class="centered" *ngIf="!isLoaded">
+                        <img src="../../../assets/images/spinner.gif" />
                 </div>
                 <div *ngIf="isLoaded" class="card-body">
                     <canvas

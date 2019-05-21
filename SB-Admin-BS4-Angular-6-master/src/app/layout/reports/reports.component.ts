@@ -26,6 +26,7 @@ export class ReportsComponent implements OnInit {
     public filterBeforeDateSearch: string;
     public filterVehicleTypeSearch: string;
     public filterPostalCode$ = new Subject<string>();
+    public loading = true;
 
     constructor(private reportDataService: ReportDataService) {
         this.filterInsuranceNumber$
@@ -51,16 +52,24 @@ export class ReportsComponent implements OnInit {
     private _reports: Report[];
 
     ngOnInit() {
+        // this.loading = true;
+        this.loadData();
+    }
+    loadData() {
+
         this.reportDataService.reportsByInsurer.subscribe(
-            reports => (this._reports = this._reports = reports.sort((a: Report, b: Report) => {
-                if (new Date(a.dateReportReceived) > new Date(b.dateReportReceived)) {
-                  return -1;
-                } else if (new Date(a.dateReportReceived) < new Date(b.dateReportReceived)) {
-                  return 1;
-                } else {
-                  return 0;
-                }
-              })),
+            reports => {
+                this._reports = this._reports = reports.sort((a: Report, b: Report) => {
+                    if (new Date(a.dateReportReceived) > new Date(b.dateReportReceived)) {
+                        return -1;
+                    } else if (new Date(a.dateReportReceived) < new Date(b.dateReportReceived)) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+                this.loading = false;
+            },
             (error: HttpErrorResponse) => {
                 console.log(error.message);
             }
