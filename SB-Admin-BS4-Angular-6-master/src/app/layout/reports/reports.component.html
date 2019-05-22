@@ -79,7 +79,9 @@
         </div>
         
     </div>
-
+    <div class="centered" *ngIf="loading">
+        <img src="../../../assets/images/spinner.gif" />
+</div>
     
     <div class="card mb-3" *ngIf="!loading">
         <div class="row card-header">
